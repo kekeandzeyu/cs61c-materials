@@ -167,6 +167,11 @@ bool test_print_board_2() {
   size_t file_size = strlen(expected);
 
   game_state_t *state = create_default_state();
+
+  for (int i = 4; i < state->num_rows; i++) {
+    free(state->board[i]);
+  }
+
   state->num_rows = 4;
   strncpy(state->board[3], state->board[0], DEFAULT_BOARD_WIDTH);
   save_board(state, "unit-test-out.snk");
@@ -1166,6 +1171,7 @@ bool test_read_line_1() {
   char *actual = read_line(fp);
   fclose(fp);
 
+  if (actual == NULL) return false;
   if (strcmp(expected, actual) != 0) {
     free(actual);
     return false;
@@ -1184,6 +1190,7 @@ bool test_read_line_2() {
   bool success = true;
   for (int i = 0; i < 4; i++) {
     char *actual = read_line(fp);
+    if (actual == NULL) return false;
     if (strcmp(expected[i], actual) != 0) {
       success = false;
       break;

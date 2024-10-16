@@ -46,6 +46,7 @@ int main(int argc, char *argv[]) {
     // TODO: Load the board from in_filename
     // TODO: If the file doesn't exist, return -1
     // TODO: Then call initialize_snakes on the state you made
+    // TODO: close file pointer
   } else if (io_stdin) {
     // TODO: Load the board from stdin
     // TODO: Then call initialize_snakes on the state you made

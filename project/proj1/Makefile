@@ -38,9 +38,11 @@ interactive-snake: $(INTERACTIVE_DEPS)
 	$(CC) -o $@ $^ -pthread $(CFLAGS) $(LDFLAGS)
 
 unit-tests: $(UNIT_TESTS_DEPS)
+	@$(MAKE) check-hashes
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 custom-tests: $(CUSTOM_TESTS_DEPS)
+	@$(MAKE) check-hashes
 	$(CC) -o $@ $^ $(CFLAGS) $(LDFLAGS)
 
 %.o: %.c
