@@ -23,26 +23,62 @@ static void update_head(game_state_t *state, unsigned int snum);
 
 /* Task 1 */
 game_state_t *create_default_state() {
-    struct game_state_t *state = malloc(sizeof(struct game_state_t));
+    game_state_t *state = malloc(sizeof(game_state_t));
+    if (!state) { // check for malloc failure
+        return NULL;
+    }
     state->num_rows = 18;
     state->board = malloc(state->num_rows * sizeof(char *));
+    if (!state->board) { // check for malloc failure
+        free(state);
+        return NULL;
+    }
+
     for (int i = 0; i < state->num_rows; i++) {
-        state->board[i] = malloc(18 * sizeof(char));
-        for (int j = 0; j < 18; j++) {
-            if (i == 0 || i == 17 || j == 0 || j == 17) {
+        state->board[i] = malloc(21 * sizeof(char)); // 20 + 1 for null terminator and newline
+        if (!state->board[i]) {
+            // free previously allocated rows and then state
+            for (int k = 0; k < i; k++){
+                free(state->board[k]);
+            }
+            free(state->board);
+            free(state);
+            return NULL;
+        }
+        for (int j = 0; j < 20; j++) {
+            if (i == 0 || i == 17 || j == 0 || j == 19) {
                 state->board[i][j] = '#';
             } else {
                 state->board[i][j] = ' ';
             }
         }
+        state->board[i][20] = '\n'; 
+        state->board[i][21] = '\0';  // Null-terminate
     }
+
+    
+    state->board[2][9] = '*';
+    state->board[2][2] = 'd';
+    state->board[2][3] = '>';
+    state->board[2][4] = 'D';
+
     state->num_snakes = 1;
-    state->snakes = malloc(sizeof(struct snake_t));
+    state->snakes = malloc(sizeof(snake_t));
+    if (!state->snakes) { //check for malloc failure
+        for (int i = 0; i < state->num_rows; i++) {
+            free(state->board[i]);
+        }
+        free(state->board);
+        free(state);
+        return NULL;
+    }
     state->snakes->tail_row = 2;
     state->snakes->tail_col = 2;
     state->snakes->head_row = 2;
     state->snakes->head_col = 4;
     state->snakes->live = true;
+    
+    return state; 
 }
 
 /* Task 2 */
