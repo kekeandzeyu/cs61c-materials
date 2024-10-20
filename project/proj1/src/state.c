@@ -23,8 +23,26 @@ static void update_head(game_state_t *state, unsigned int snum);
 
 /* Task 1 */
 game_state_t *create_default_state() {
-  // TODO: Implement this function.
-  return NULL;
+    struct game_state_t *state = malloc(sizeof(struct game_state_t));
+    state->num_rows = 18;
+    state->board = malloc(state->num_rows * sizeof(char *));
+    for (int i = 0; i < state->num_rows; i++) {
+        state->board[i] = malloc(18 * sizeof(char));
+        for (int j = 0; j < 18; j++) {
+            if (i == 0 || i == 17 || j == 0 || j == 17) {
+                state->board[i][j] = '#';
+            } else {
+                state->board[i][j] = ' ';
+            }
+        }
+    }
+    state->num_snakes = 1;
+    state->snakes = malloc(sizeof(struct snake_t));
+    state->snakes->tail_row = 2;
+    state->snakes->tail_col = 2;
+    state->snakes->head_row = 2;
+    state->snakes->head_col = 4;
+    state->snakes->live = true;
 }
 
 /* Task 2 */
