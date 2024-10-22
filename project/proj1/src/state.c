@@ -35,7 +35,7 @@ game_state_t *create_default_state() {
     }
 
     for (int i = 0; i < state->num_rows; i++) {
-        state->board[i] = malloc(21 * sizeof(char)); // 20 + 1 for null terminator and newline
+        state->board[i] = malloc(21 * sizeof(char)); 
         if (!state->board[i]) {
             // free previously allocated rows and then state
             for (int k = 0; k < i; k++){
@@ -53,7 +53,6 @@ game_state_t *create_default_state() {
             }
         }
         state->board[i][20] = '\n'; 
-        state->board[i][21] = '\0';  // Null-terminate
     }
 
     
@@ -83,14 +82,35 @@ game_state_t *create_default_state() {
 
 /* Task 2 */
 void free_state(game_state_t *state) {
-  // TODO: Implement this function.
-  return;
+    if (state == NULL) {  // Handle the case where state is NULL
+        return;
+    }
+
+    if (state->board != NULL) { // Check if the board has been allocated
+        for (unsigned int i = 0; i < state->num_rows; i++) {
+            free(state->board[i]);
+        }
+        free(state->board);
+    }
+
+    if (state->snakes != NULL) { // Check if snakes has been allocated
+        free(state->snakes);
+    }
+
+    free(state);
 }
 
 /* Task 3 */
 void print_board(game_state_t *state, FILE *fp) {
-  // TODO: Implement this function.
-  return;
+    if (!state || !fp) { // Handle NULL pointers defensively
+        return;
+    }
+
+    for (unsigned int i = 0; i < state->num_rows; i++) {
+        if (state->board[i] != NULL) {  // Make sure the row exists
+            fprintf(fp, "%s", state->board[i]); // Print each row (including the newline)
+        }
+    }
 }
 
 /*
@@ -98,9 +118,9 @@ void print_board(game_state_t *state, FILE *fp) {
   (already implemented for you).
 */
 void save_board(game_state_t *state, char *filename) {
-  FILE *f = fopen(filename, "w");
-  print_board(state, f);
-  fclose(f);
+    FILE *f = fopen(filename, "w");
+    print_board(state, f);
+    fclose(f);
 }
 
 /* Task 4.1 */
@@ -116,7 +136,7 @@ char get_board_at(game_state_t *state, unsigned int row, unsigned int col) { ret
   (already implemented for you).
 */
 static void set_board_at(game_state_t *state, unsigned int row, unsigned int col, char ch) {
-  state->board[row][col] = ch;
+    state->board[row][col] = ch;
 }
 
 /*
@@ -125,8 +145,7 @@ static void set_board_at(game_state_t *state, unsigned int row, unsigned int col
   Returns false otherwise.
 */
 static bool is_tail(char c) {
-  // TODO: Implement this function.
-  return true;
+    return (c == 'w' || c == 'a' || c == 's' || c == 'd');
 }
 
 /*
@@ -135,8 +154,7 @@ static bool is_tail(char c) {
   Returns false otherwise.
 */
 static bool is_head(char c) {
-  // TODO: Implement this function.
-  return true;
+    return (c == 'W' || c == 'A' || c == 'S' || c == 'D' || c == 'x');
 }
 
 /*
@@ -144,8 +162,7 @@ static bool is_head(char c) {
   The snake consists of these characters: "wasd^<v>WASDx"
 */
 static bool is_snake(char c) {
-  // TODO: Implement this function.
-  return true;
+    return (is_tail(c) || is_head(c) || c == '^' || c == '<' || c == 'v' || c == '>');
 }
 
 /*
@@ -154,8 +171,13 @@ static bool is_snake(char c) {
   tail ("wasd").
 */
 static char body_to_tail(char c) {
-  // TODO: Implement this function.
-  return '?';
+    switch (c) {
+        case '^': return 'w';
+        case '<': return 'a';
+        case 'v': return 's';
+        case '>': return 'd';
+        default: return '?'; 
+    }
 }
 
 /*
@@ -164,8 +186,13 @@ static char body_to_tail(char c) {
   body ("^<v>").
 */
 static char head_to_body(char c) {
-  // TODO: Implement this function.
-  return '?';
+    switch (c) {
+        case 'W': return '^';
+        case 'A': return '<';
+        case 'S': return 'v';
+        case 'D': return '>';
+        default: return '?'; 
+    }
 }
 
 /*
@@ -174,8 +201,13 @@ static char head_to_body(char c) {
   Returns cur_row otherwise.
 */
 static unsigned int get_next_row(unsigned int cur_row, char c) {
-  // TODO: Implement this function.
-  return cur_row;
+    if (c == 'v' || c == 's' || c == 'S') {
+        return cur_row + 1;
+    } else if (c == '^' || c == 'w' || c == 'W') {
+        return cur_row - 1;
+    } else {
+        return cur_row;
+    }
 }
 
 /*
@@ -184,8 +216,13 @@ static unsigned int get_next_row(unsigned int cur_row, char c) {
   Returns cur_col otherwise.
 */
 static unsigned int get_next_col(unsigned int cur_col, char c) {
-  // TODO: Implement this function.
-  return cur_col;
+    if (c == '>' || c == 'd' || c == 'D') {
+        return cur_col + 1;
+    } else if (c == '<' || c == 'a' || c == 'A') {
+        return cur_col - 1;
+    } else {
+        return cur_col;
+    }
 }
 
 /*

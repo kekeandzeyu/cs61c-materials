@@ -12,13 +12,13 @@
 int greater_than_forty_two(int x) { return x > 42; }
 
 bool is_vowel(char c) {
-  char *vowels = "aeiouAEIOU";
-  for (int i = 0; i < strlen(vowels); i++) {
-    if (c == vowels[i]) {
-      return true;
+    char *vowels = "aeiouAEIOU";
+    for (int i = 0; i < strlen(vowels); i++) {
+        if (c == vowels[i]) {
+            return true;
+        }
     }
-  }
-  return false;
+    return false;
 }
 
 /*
@@ -27,25 +27,25 @@ bool is_vowel(char c) {
     Note: This test is NOT comprehensive
 */
 bool test_greater_than_forty_two() {
-  int testcase_1 = 42;
-  bool output_1 = greater_than_forty_two(testcase_1);
-  if (!assert_false("output_1", output_1)) {
-    return false;
-  }
+    int testcase_1 = 42;
+    bool output_1 = greater_than_forty_two(testcase_1);
+    if (!assert_false("output_1", output_1)) {
+        return false;
+    }
 
-  int testcase_2 = -42;
-  bool output_2 = greater_than_forty_two(testcase_2);
-  if (!assert_false("output_2", output_2)) {
-    return false;
-  }
+    int testcase_2 = -42;
+    bool output_2 = greater_than_forty_two(testcase_2);
+    if (!assert_false("output_2", output_2)) {
+        return false;
+    }
 
-  int testcase_3 = 4242;
-  bool output_3 = greater_than_forty_two(testcase_3);
-  if (!assert_true("output_3", output_3)) {
-    return false;
-  }
+    int testcase_3 = 4242;
+    bool output_3 = greater_than_forty_two(testcase_3);
+    if (!assert_true("output_3", output_3)) {
+        return false;
+    }
 
-  return true;
+    return true;
 }
 
 /*
@@ -55,128 +55,172 @@ bool test_greater_than_forty_two() {
     Note: This test is NOT comprehensive
 */
 bool test_is_vowel() {
-  char testcase_1 = 'a';
-  bool output_1 = is_vowel(testcase_1);
-  if (!assert_true("output_1", output_1)) {
-    return false;
-  }
+    char testcase_1 = 'a';
+    bool output_1 = is_vowel(testcase_1);
+    if (!assert_true("output_1", output_1)) {
+        return false;
+    }
 
-  char testcase_2 = 'e';
-  bool output_2 = is_vowel(testcase_2);
-  if (!assert_true("output_2", output_2)) {
-    return false;
-  }
+    char testcase_2 = 'e';
+    bool output_2 = is_vowel(testcase_2);
+    if (!assert_true("output_2", output_2)) {
+        return false;
+    }
 
-  char testcase_3 = 'i';
-  bool output_3 = is_vowel(testcase_3);
-  if (!assert_true("output_3", output_3)) {
-    return false;
-  }
+    char testcase_3 = 'i';
+    bool output_3 = is_vowel(testcase_3);
+    if (!assert_true("output_3", output_3)) {
+        return false;
+    }
 
-  char testcase_4 = 'o';
-  bool output_4 = is_vowel(testcase_4);
-  if (!assert_true("output_4", output_4)) {
-    return false;
-  }
+    char testcase_4 = 'o';
+    bool output_4 = is_vowel(testcase_4);
+    if (!assert_true("output_4", output_4)) {
+        return false;
+    }
 
-  char testcase_5 = 'u';
-  bool output_5 = is_vowel(testcase_5);
-  if (!assert_true("output_5", output_5)) {
-    return false;
-  }
+    char testcase_5 = 'u';
+    bool output_5 = is_vowel(testcase_5);
+    if (!assert_true("output_5", output_5)) {
+        return false;
+    }
 
-  char testcase_6 = 'k';
-  bool output_6 = is_vowel(testcase_6);
-  if (!assert_false("output_6", output_6)) {
-    return false;
-  }
+    char testcase_6 = 'k';
+    bool output_6 = is_vowel(testcase_6);
+    if (!assert_false("output_6", output_6)) {
+        return false;
+    }
 
-  return true;
+    return true;
 }
 
 /* Task 4.1 */
 
 bool test_is_tail() {
-  // TODO: Implement this function.
-  return true;
+    assert_true("is_tail('w')", is_tail('w'));
+    assert_true("is_tail('a')", is_tail('a'));
+    assert_true("is_tail('s')", is_tail('s'));
+    assert_true("is_tail('d')", is_tail('d'));
+    assert_false("is_tail('W')", is_tail('W'));
+    assert_false("is_tail('A')", is_tail('A'));
+    assert_false("is_tail('S')", is_tail('S'));
+    assert_false("is_tail('D')", is_tail('D'));
+    assert_false("is_tail('x')", is_tail('x'));
+    assert_false("is_tail('^')", is_tail('^'));
+    assert_false("is_tail(' ')", is_tail(' '));
+    return true;
 }
 
 bool test_is_head() {
-  // TODO: Implement this function.
-  return true;
+    assert_true("is_head('W')", is_head('W'));
+    assert_true("is_head('A')", is_head('A'));
+    assert_true("is_head('S')", is_head('S'));
+    assert_true("is_head('D')", is_head('D'));
+    assert_true("is_head('x')", is_head('x'));
+    assert_false("is_head('w')", is_head('w'));
+    assert_false("is_head('a')", is_head('a'));
+    assert_false("is_head('s')", is_head('s'));
+    assert_false("is_head('d')", is_head('d'));
+    assert_false("is_head('^')", is_head('^'));
+    assert_false("is_head(' ')", is_head(' '));
+    return true;
 }
 
 bool test_is_snake() {
-  // TODO: Implement this function.
-  return true;
+    assert_true("is_snake('w')", is_snake('w'));
+    assert_true("is_snake('W')", is_snake('W'));
+    assert_true("is_snake('^')", is_snake('^'));
+    assert_true("is_snake('<')", is_snake('<'));
+    assert_false("is_snake(' ')", is_snake(' '));
+    return true;
 }
 
 bool test_body_to_tail() {
-  // TODO: Implement this function.
-  return true;
+    assert_equals_char("body_to_tail('^')", 'w', body_to_tail('^'));
+    assert_equals_char("body_to_tail('<')", 'a', body_to_tail('<'));
+    assert_equals_char("body_to_tail('v')", 's', body_to_tail('v'));
+    assert_equals_char("body_to_tail('>')", 'd', body_to_tail('>'));
+    assert_equals_char("body_to_tail('?')", '?', body_to_tail('?'));
+    return true;
 }
 
 bool test_head_to_body() {
-  // TODO: Implement this function.
-  return true;
+    assert_equals_char("head_to_body('W')", '^', head_to_body('W'));
+    assert_equals_char("head_to_body('A')", '<', head_to_body('A'));
+    assert_equals_char("head_to_body('S')", 'v', head_to_body('S'));
+    assert_equals_char("head_to_body('D')", '>', head_to_body('D'));
+    assert_equals_char("head_to_body('x')", '?', head_to_body('x'));
+    return true;
 }
 
 bool test_get_next_row() {
-  // TODO: Implement this function.
-  return true;
+    assert_equals_unsigned_int("get_next_row(5, 'v')", 6, get_next_row(5, 'v'));
+    assert_equals_unsigned_int("get_next_row(5, 's')", 6, get_next_row(5, 's'));
+    assert_equals_unsigned_int("get_next_row(5, 'S')", 6, get_next_row(5, 'S'));
+    assert_equals_unsigned_int("get_next_row(5, '^')", 4, get_next_row(5, '^'));
+    assert_equals_unsigned_int("get_next_row(5, 'w')", 4, get_next_row(5, 'w'));
+    assert_equals_unsigned_int("get_next_row(5, 'W')", 4, get_next_row(5, 'W'));
+    assert_equals_unsigned_int("get_next_row(5, '>')", 5, get_next_row(5, '>'));
+    return true;
 }
 
 bool test_get_next_col() {
-  // TODO: Implement this function.
-  return true;
+    assert_equals_unsigned_int("get_next_col(10, '>')", 11, get_next_col(10, '>'));
+    assert_equals_unsigned_int("get_next_col(10, 'd')", 11, get_next_col(10, 'd'));
+    assert_equals_unsigned_int("get_next_col(10, 'D')", 11, get_next_col(10, 'D'));
+    assert_equals_unsigned_int("get_next_col(10, '<')", 9, get_next_col(10, '<'));
+    assert_equals_unsigned_int("get_next_col(10, 'a')", 9, get_next_col(10, 'a'));
+    assert_equals_unsigned_int("get_next_col(10, 'A')", 9, get_next_col(10, 'A'));
+    assert_equals_unsigned_int("get_next_col(10, 'v')", 10, get_next_col(10, 'v'));     
+    return true;
 }
 
 bool test_customs() {
-  if (!test_greater_than_forty_two()) {
-    printf("%s\n", "test_greater_than_forty_two failed.");
-    return false;
-  }
-  if (!test_is_vowel()) {
-    printf("%s\n", "test_is_vowel failed.");
-    return false;
-  }
-  if (!test_is_tail()) {
-    printf("%s\n", "test_is_tail failed");
-    return false;
-  }
-  if (!test_is_head()) {
-    printf("%s\n", "test_is_head failed");
-    return false;
-  }
-  if (!test_is_snake()) {
-    printf("%s\n", "test_is_snake failed");
-    return false;
-  }
-  if (!test_body_to_tail()) {
-    printf("%s\n", "test_body_to_tail failed");
-    return false;
-  }
-  if (!test_head_to_body()) {
-    printf("%s\n", "test_head_to_body failed");
-    return false;
-  }
-  if (!test_get_next_row()) {
-    printf("%s\n", "test_get_next_row failed");
-    return false;
-  }
-  if (!test_get_next_col()) {
-    printf("%s\n", "test_get_next_col failed");
-    return false;
-  }
-  return true;
+    if (!test_greater_than_forty_two()) {
+        printf("%s\n", "test_greater_than_forty_two failed.");
+        return false;
+    }
+    if (!test_is_vowel()) {
+        printf("%s\n", "test_is_vowel failed.");
+        return false;
+    }
+    if (!test_is_tail()) {
+        printf("%s\n", "test_is_tail failed");
+        return false;
+    }
+    if (!test_is_head()) {
+        printf("%s\n", "test_is_head failed");
+        return false;
+    }
+    if (!test_is_snake()) {
+        printf("%s\n", "test_is_snake failed");
+        return false;
+    }
+    if (!test_body_to_tail()) {
+        printf("%s\n", "test_body_to_tail failed");
+        return false;
+    }
+    if (!test_head_to_body()) {
+        printf("%s\n", "test_head_to_body failed");
+        return false;
+    }
+    if (!test_get_next_row()) {
+        printf("%s\n", "test_get_next_row failed");
+        return false;
+    }
+    if (!test_get_next_col()) {
+        printf("%s\n", "test_get_next_col failed");
+        return false;
+    }
+    return true;
 }
 
 int main(int argc, char *argv[]) {
-  init_colors();
+    init_colors();
 
-  if (!test_and_print("custom", test_customs)) {
+    if (!test_and_print("custom", test_customs)) {
+        return 0;
+    }
+
     return 0;
-  }
-
-  return 0;
 }
