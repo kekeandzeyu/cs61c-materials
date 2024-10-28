@@ -23,11 +23,16 @@ static void update_head(game_state_t *state, unsigned int snum);
 
 /* Task 1 */
 game_state_t *create_default_state() {
+    // 1. initiate game state
     game_state_t *state = malloc(sizeof(game_state_t));
     if (!state) { // check for malloc failure
         return NULL;
     }
+
+    // 2. initiate num_rows
     state->num_rows = 18;
+
+    // 3. initiate board
     state->board = malloc(state->num_rows * sizeof(char *));
     if (!state->board) { // check for malloc failure
         free(state);
@@ -37,7 +42,7 @@ game_state_t *create_default_state() {
     for (int i = 0; i < state->num_rows; i++) {
         state->board[i] = malloc(21 * sizeof(char)); 
         if (!state->board[i]) {
-            // free previously allocated rows and then state
+            // free previously allocated rows and state
             for (int k = 0; k < i; k++){
                 free(state->board[k]);
             }
@@ -61,9 +66,10 @@ game_state_t *create_default_state() {
     state->board[2][3] = '>';
     state->board[2][4] = 'D';
 
+    // 4. initiate num_snakes
     state->num_snakes = 1;
     state->snakes = malloc(sizeof(snake_t));
-    if (!state->snakes) { //check for malloc failure
+    if (!state->snakes) { // check for malloc failure
         for (int i = 0; i < state->num_rows; i++) {
             free(state->board[i]);
         }
@@ -71,6 +77,8 @@ game_state_t *create_default_state() {
         free(state);
         return NULL;
     }
+
+    // 5. initiate snake
     state->snakes->tail_row = 2;
     state->snakes->tail_col = 2;
     state->snakes->head_row = 2;
@@ -233,8 +241,18 @@ static unsigned int get_next_col(unsigned int cur_col, char c) {
   This function should not modify anything.
 */
 static char next_square(game_state_t *state, unsigned int snum) {
-  // TODO: Implement this function.
-  return '?';
+    if (!state || snum >= state->num_snakes) {
+        return '?';
+    }
+
+    snake_t *snake = &state->snakes[snum];
+    unsigned int next_row = get_next_row(snake->head_row, get_board_at(state, snake->head_row, snake->head_col));
+    unsigned int next_col = get_next_col(snake->head_col, get_board_at(state, snake->head_row, snake->head_col));
+
+    if (next_row >= state->num_rows || next_col >= strlen(state->board[0]) -1) {
+        return '?';
+    }
+    return get_board_at(state, next_row, next_col);
 }
 
 /*
