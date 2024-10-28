@@ -4,7 +4,7 @@
 
 In this repository, I've packed all the detailed solutions of labs, homework and projects in CS61C.  Solutions of projects are implemented by myself.
 
-Want to know more about my notes taken during studying CS61C? Please visit the [link](https://csstudy.pages.dev/) and click on Python Programming topic for more!
+Want to know more about my notes taken during studying CS61C? Please visit the [link](https://csstudy.pages.dev/) and click on Computer Architecture topic for more!
 
 ## 2 Content
 
