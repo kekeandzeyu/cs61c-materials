@@ -40,7 +40,7 @@ game_state_t *create_default_state() {
     }
 
     for (int i = 0; i < state->num_rows; i++) {
-        state->board[i] = malloc(21 * sizeof(char)); 
+        state->board[i] = malloc(22 * sizeof(char)); 
         if (!state->board[i]) {
             // free previously allocated rows and state
             for (int k = 0; k < i; k++){
@@ -58,6 +58,7 @@ game_state_t *create_default_state() {
             }
         }
         state->board[i][20] = '\n'; 
+        state->board[i][21] = '\0';
     }
 
     
@@ -311,25 +312,29 @@ static void update_tail(game_state_t *state, unsigned int snum) {
     if (!state || snum >= state->num_snakes) { 
         return; 
     }
-
-    // Get current tail position and character
-    unsigned int tail_row = state->snakes[snum].tail_row;
-    unsigned int tail_col = state->snakes[snum].tail_col;
+    
+    // Get the snake's tail position and character
+    snake_t *snake = &(state->snakes[snum]);
+    unsigned int tail_row = snake->tail_row;
+    unsigned int tail_col = snake->tail_col;
     char tail_char = get_board_at(state, tail_row, tail_col);
 
-    // Calculate new tail position
-    unsigned int new_row = get_next_row(tail_row, body_to_tail(tail_char));
-    unsigned int new_col = get_next_col(tail_col, body_to_tail(tail_char));
-
-    // Update the board: blank out the current tail
+    // Remove the tail from the board
     set_board_at(state, tail_row, tail_col, ' ');
 
-    // Place tail character at new position
-    set_board_at(state, new_row, new_col, body_to_tail(tail_char));
+    // Calculate the new tail position
+    unsigned int new_tail_row = get_next_row(tail_row, tail_char);
+    unsigned int new_tail_col = get_next_col(tail_col, tail_char);
 
-    // Update snake's tail position in the struct
-    state->snakes[snum].tail_row = new_row;
-    state->snakes[snum].tail_col = new_col;
+    // Get the character at the new tail position
+    char new_tail_char = get_board_at(state, new_tail_row, new_tail_col);
+
+    // Update the new tail character on the board
+    set_board_at(state, new_tail_row, new_tail_col, body_to_tail(new_tail_char));
+
+    // Update the tail position in the snake struct
+    snake->tail_row = new_tail_row;
+    snake->tail_col = new_tail_col;
 }
 
 /* Task 4.5 */
