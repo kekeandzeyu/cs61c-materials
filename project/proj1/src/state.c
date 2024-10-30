@@ -368,14 +368,48 @@ void update_state(game_state_t *state, int (*add_food)(game_state_t *state)) {
 
 /* Task 5.1 */
 char *read_line(FILE *fp) {
-    // TODO: Implement this function.
-    return NULL;
+    char *line = malloc(1024 * sizeof(char)); 
+    if (!line) {
+        return NULL;
+    }
+
+    if (fgets(line, 1024, fp) == NULL) {
+        free(line);
+        return NULL;
+    }
+
+    return line; 
 }
 
 /* Task 5.2 */
 game_state_t *load_board(FILE *fp) {
-    // TODO: Implement this function.
-    return NULL;
+    if (!fp) {
+        return NULL;
+    }
+
+    game_state_t *state = malloc(sizeof(game_state_t));
+    if (!state) {
+        return NULL;
+    }
+
+    state->board = NULL;
+    state->num_rows = 0;
+    state->num_snakes = 0;
+    state->snakes = NULL;
+
+    char *line;
+    while ((line = read_line(fp)) != NULL) {
+        state->num_rows++;
+        state->board = realloc(state->board, state->num_rows * sizeof(char *));
+        if (!state->board) {
+            free_state(state); 
+            free(line);
+            return NULL;
+        }
+        state->board[state->num_rows - 1] = line;
+    }
+
+    return state;
 }
 
 /*
@@ -387,12 +421,64 @@ game_state_t *load_board(FILE *fp) {
   fill in the head row and col in the struct.
 */
 static void find_head(game_state_t *state, unsigned int snum) {
-    // TODO: Implement this function.
-    return;
+    if (!state || snum >= state->num_snakes) {
+        return;
+    }
+
+    snake_t *snake = &state->snakes[snum];
+    unsigned int cur_row = snake->tail_row;
+    unsigned int cur_col = snake->tail_col;
+    char cur_char = get_board_at(state, cur_row, cur_col);
+
+    while (!is_head(cur_char)) {
+        cur_row = get_next_row(cur_row, cur_char);
+        cur_col = get_next_col(cur_col, cur_char);
+        cur_char = get_board_at(state, cur_row, cur_col);
+    }
+
+    snake->head_row = cur_row;
+    snake->head_col = cur_col;
 }
 
 /* Task 6.2 */
 game_state_t *initialize_snakes(game_state_t *state) {
-    // TODO: Implement this function.
-    return NULL;
+    if (!state) {
+        return NULL;
+    }
+
+    // 1. Count the number of snakes
+    state->num_snakes = 0;
+    for (unsigned int row = 0; row < state->num_rows; row++) {
+        for (unsigned int col = 0; col < strlen(state->board[row]); col++) {
+            if (is_tail(get_board_at(state, row, col))) {
+                state->num_snakes++;
+            }
+        }
+    }
+    
+    // 2. Allocate memory for the snakes array
+    if (!state->snakes) {
+        state->snakes = malloc(state->num_snakes * sizeof(snake_t));
+        if (!state->snakes) {
+            return NULL; // Memory allocation failed
+        }
+    }
+
+    
+    // 3. Initialize the snakes array
+    unsigned int snake_index = 0;
+    for (unsigned int row = 0; row < state->num_rows; row++) {
+        for (unsigned int col = 0; col < strlen(state->board[row]); col++) {
+            if (is_tail(get_board_at(state, row, col))) {
+                state->snakes[snake_index].tail_row = row;
+                state->snakes[snake_index].tail_col = col;
+                state->snakes[snake_index].live = true; // Snakes start alive
+                find_head(state, snake_index);        // Find the head
+                snake_index++;
+            }
+        }
+    }
+
+
+    return state;
 }
