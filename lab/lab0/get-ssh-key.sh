@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euf -o pipefail
 
-SSH_HOST=${1:-hive4.cs.berkeley.edu}
+SSH_HOST=${1:-s275-4.cs.berkeley.edu}
 
 for OUTPUT in $(ssh "$SSH_HOST" -G | grep "^identityfile " | cut -d " " -f2-)
 do
