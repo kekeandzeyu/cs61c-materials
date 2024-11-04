@@ -368,22 +368,51 @@ void update_state(game_state_t *state, int (*add_food)(game_state_t *state)) {
 
 /* Task 5.1 */
 char *read_line(FILE *fp) {
-    char *line = malloc(1024 * sizeof(char)); 
-    if (!line) {
+    if (fp == NULL) {
         return NULL;
     }
 
-    if (fgets(line, 1024, fp) == NULL) {
-        free(line);
+    size_t capacity = 128;
+    size_t length = 0;
+    char *buffer = malloc(capacity);
+    if (!buffer) {
         return NULL;
     }
 
-    return line; 
+    while (true) {
+        if (capacity - length > INT32_MAX) {
+            free(buffer);
+            return NULL; 
+        }
+        char *result = fgets(buffer + length, (int)(capacity - length), fp);
+        if (!result) {
+            if (length == 0) {
+                free(buffer);
+                return NULL;
+            }
+            break;
+        }
+
+        length += strlen(buffer + length);
+        if (buffer[length - 1] == '\n' || feof(fp)) {
+            break;
+        }
+
+        capacity *= 2;
+        char *new_buffer = realloc(buffer, capacity);
+        if (!new_buffer) {
+            free(buffer);
+            return NULL;
+        }
+        buffer = new_buffer;
+    }
+
+    return buffer;
 }
 
 /* Task 5.2 */
 game_state_t *load_board(FILE *fp) {
-    if (!fp) {
+    if (fp == NULL) {
         return NULL;
     }
 
@@ -392,21 +421,27 @@ game_state_t *load_board(FILE *fp) {
         return NULL;
     }
 
-    state->board = NULL;
     state->num_rows = 0;
-    state->num_snakes = 0;
+    state->board = NULL;
     state->snakes = NULL;
+    state->num_snakes = 0;
 
     char *line;
     while ((line = read_line(fp)) != NULL) {
-        state->num_rows++;
-        state->board = realloc(state->board, state->num_rows * sizeof(char *));
-        if (!state->board) {
-            free_state(state); 
+        char **new_board = realloc(state->board, (state->num_rows + 1) * sizeof(char *));
+        if (!new_board) {
+            free_state(state);
             free(line);
             return NULL;
         }
-        state->board[state->num_rows - 1] = line;
+        state->board = new_board;
+        state->board[state->num_rows] = line;
+        state->num_rows++;
+    }
+
+    if (state->num_rows == 0) {
+        free(state);
+        return NULL;
     }
 
     return state;
