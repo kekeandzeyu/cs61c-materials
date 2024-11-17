@@ -92,7 +92,7 @@ main:
 
 	# passing 10 to ecall will terminate the program
     li a0, 10
-    ecall
+    ecall   
 
 # prints out one integer
 # input values: a0: the integer to print
